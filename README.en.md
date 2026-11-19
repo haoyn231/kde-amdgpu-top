@@ -48,12 +48,12 @@ The release archive is **plain QML plus a Python script** — there is no binary
 1. Requirements: KDE Plasma 6 (Qt 6.5+), [`amdgpu_top`](https://github.com/Umio-Yasuno/amdgpu_top) (≥ 0.9) and `python3` (standard library only). The published package is tested on Arch Linux / Plasma 6.8.3 / Qt 6.12 / amdgpu_top 0.11.5.
 2. Download `kde-amdgpu-top-vX.Y.Z.tar.gz` and the matching `.sha256` file from [Releases](https://github.com/haoyn231/kde-amdgpu-top/releases), then verify:
    ```bash
-   sha256sum -c kde-amdgpu-top-v0.1.0.tar.gz.sha256
+   sha256sum -c kde-amdgpu-top-v0.1.1.tar.gz.sha256
    ```
 3. Extract it into your user Plasma widget directory:
    ```bash
    mkdir -p ~/.local/share/plasma/plasmoids
-   tar -xzf kde-amdgpu-top-v0.1.0.tar.gz -C ~/.local/share/plasma/plasmoids
+   tar -xzf kde-amdgpu-top-v0.1.1.tar.gz -C ~/.local/share/plasma/plasmoids
    ```
    You should end up with:
    ```

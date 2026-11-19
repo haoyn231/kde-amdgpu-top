@@ -48,12 +48,12 @@ Release 包是**纯 QML + Python 脚本**，没有需要编译的二进制，普
 1. 系统要求：KDE Plasma 6（Qt 6.5+）、[`amdgpu_top`](https://github.com/Umio-Yasuno/amdgpu_top)（≥ 0.9）、`python3`（只用标准库）。发布包在 Arch Linux / Plasma 6.8.3 / Qt 6.12 / amdgpu_top 0.11.5 上测试。
 2. 从 [Releases](https://github.com/haoyn231/kde-amdgpu-top/releases) 下载 `kde-amdgpu-top-vX.Y.Z.tar.gz` 和对应的 `.sha256` 文件，并校验：
    ```bash
-   sha256sum -c kde-amdgpu-top-v0.1.0.tar.gz.sha256
+   sha256sum -c kde-amdgpu-top-v0.1.1.tar.gz.sha256
    ```
 3. 解压到当前用户的 Plasma 小程序目录：
    ```bash
    mkdir -p ~/.local/share/plasma/plasmoids
-   tar -xzf kde-amdgpu-top-v0.1.0.tar.gz -C ~/.local/share/plasma/plasmoids
+   tar -xzf kde-amdgpu-top-v0.1.1.tar.gz -C ~/.local/share/plasma/plasmoids
    ```
    解压后应存在：
    ```

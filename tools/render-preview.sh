@@ -27,16 +27,16 @@ environment=(QML_XHR_ALLOW_FILE_READ=1 QT_QPA_PLATFORMTHEME=KDE QT_QPA_PLATFORM=
 
 echo "渲染弹窗…"
 env "${environment[@]}" timeout 60 "$QML_BIN" tools/preview.qml 2>&1 | grep -v "legacy metadata\|platform plugin\|installEventFilter" || true
-cp /tmp/preview-full.png "$ROOT/docs/popup.png"
+cp /tmp/preview-full.png "$ROOT/docs/images/screenshot.png"
 
 echo "渲染面板…"
 env "${environment[@]}" timeout 60 "$QML_BIN" tools/preview-compact.qml 2>&1 | grep -v "legacy metadata\|platform plugin\|installEventFilter" || true
-cp /tmp/preview-compact.png "$ROOT/docs/panel.png"
+cp /tmp/preview-compact.png "$ROOT/docs/images/panel.png"
 
 echo "渲染错误态…"
 echo error > /tmp/gpu-preview-mode.txt
 env "${environment[@]}" timeout 60 "$QML_BIN" tools/preview.qml 2>&1 | grep -v "legacy metadata\|platform plugin\|installEventFilter" || true
-cp /tmp/preview-full.png "$ROOT/docs/popup-error.png"
+cp /tmp/preview-full.png "$ROOT/docs/images/popup-error.png"
 rm -f /tmp/gpu-preview-mode.txt
 
-echo "完成：docs/popup.png、docs/panel.png、docs/popup-error.png"
+echo "完成：docs/images/screenshot.png、docs/images/panel.png、docs/images/popup-error.png"

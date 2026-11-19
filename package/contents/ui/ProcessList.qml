@@ -72,21 +72,14 @@ Item {
         resume();
     }
 
-    function refresh() {
-        if (!active || paused) {
-            return;
-        }
+    // 把排序后的进程整理成"模型应该长成的样子"
+    function wantedRows() {
         // 注意：不能在这里读 ready 绑定，属性变化通知的当下绑定值还是旧的，
         // 所以直接从 snap 现算一遍。
         const usable = snap !== null && snap !== undefined && snap.ok === true;
         if (!usable || !snap.procs || snap.procs.length === 0) {
-            if (procModel.count > 0) {
-                procModel.clear();
-            }
-            lastSignature = "";
-            return;
+            return [];
         }
-
         const rows = snap.procs.slice(0);
         const key = sortKey;
         const desc = sortDesc;
@@ -108,20 +101,11 @@ Item {
         });
 
         const limited = rows.slice(0, Math.max(1, maxProcs));
-        let signature = "";
-        for (let i = 0; i < limited.length; ++i) {
-            signature += limited[i].pid + ":" + limited[i].vram + ":" + limited[i].gfx + ";";
-        }
-        if (signature === lastSignature) {
-            return;                        // 数据没变，别白白重建一遍模型
-        }
-        lastSignature = signature;
-
         const vramTotal = snap.vram && snap.vram.total > 0 ? snap.vram.total : 1;
-        procModel.clear();
+        const out = [];
         for (let i = 0; i < limited.length; ++i) {
             const item = limited[i];
-            procModel.append({
+            out.push({
                 pid: item.pid,
                 name: item.name,
                 cmd: item.cmd,
@@ -132,6 +116,66 @@ Item {
                 media: item.media,
                 share: (item.vram / vramTotal) * 100
             });
+        }
+        return out;
+    }
+
+    // 增量同步模型，而不是每秒 clear() + append()：后者会把所有 delegate 销毁重建，
+    // 界面就一帧一帧地闪。这里只挪位置、增删行、改变化的字段，行对象保持不动。
+    function refresh() {
+        if (!active || paused) {
+            return;
+        }
+        const wanted = wantedRows();
+
+        let signature = "";
+        for (let i = 0; i < wanted.length; ++i) {
+            const row = wanted[i];
+            signature += row.pid + ":" + row.name + ":" + row.gfx + ":" + row.vram
+                       + ":" + row.gtt + ":" + row.media + ":" + row.share.toFixed(1) + ";";
+        }
+        if (signature === lastSignature) {
+            return;                        // 一个字段都没变，连 setProperty 都省了
+        }
+        lastSignature = signature;
+
+        // 1) 先让行顺序和 pid 序列对齐：已在列表里的用 move 挪，没有的插入
+        for (let i = 0; i < wanted.length; ++i) {
+            if (i >= procModel.count) {
+                procModel.append(wanted[i]);
+                continue;
+            }
+            if (procModel.get(i).pid === wanted[i].pid) {
+                continue;
+            }
+            let existing = -1;
+            for (let j = i + 1; j < procModel.count; ++j) {
+                if (procModel.get(j).pid === wanted[i].pid) {
+                    existing = j;
+                    break;
+                }
+            }
+            if (existing >= 0) {
+                procModel.move(existing, i, 1);
+            } else {
+                procModel.insert(i, wanted[i]);
+            }
+        }
+
+        // 2) 去掉多出来的尾巴
+        if (procModel.count > wanted.length) {
+            procModel.remove(wanted.length, procModel.count - wanted.length);
+        }
+
+        // 3) 只更新真正变化的字段
+        for (let i = 0; i < wanted.length; ++i) {
+            const current = procModel.get(i);
+            const target = wanted[i];
+            for (const key in target) {
+                if (current[key] !== target[key]) {
+                    procModel.setProperty(i, key, target[key]);
+                }
+            }
         }
     }
 
@@ -263,6 +307,23 @@ Item {
                     }
                 }
 
+                // 排序变化导致的行位移用短动画带过，避免整块突然跳一下
+                move: Transition {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: Kirigami.Units.shortDuration
+                        easing.type: Easing.OutCubic
+                    }
+                }
+
+                displaced: Transition {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: Kirigami.Units.shortDuration
+                        easing.type: Easing.OutCubic
+                    }
+                }
+
                 delegate: ProcessRow {
                     width: list.width - 10
                     name: model.name
@@ -276,10 +337,6 @@ Item {
                     share: model.share
                     expanded: section.expandedPid === model.pid
                     onToggled: section.expandedPid = (section.expandedPid === model.pid ? -1 : model.pid)
-                }
-
-                add: Transition {
-                    NumberAnimation { properties: "opacity"; from: 0; to: 1; duration: Kirigami.Units.shortDuration }
                 }
             }
 

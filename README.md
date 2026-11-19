@@ -55,7 +55,8 @@ systemctl --user restart plasma-plasmashell.service
 
 ## 使用
 
-- 点面板上的数字展开弹窗，再点一次收起
+- 点面板上的 `GPU` 数字：按 GPU 占用排序打开进程列表；点 `VRAM` 数字：按显存占用排序打开；再点一次收起
+- 移动位置：右键面板 → 进入编辑模式，直接拖动（面板项现在会正确占位，不会再压住时钟）
 - 弹窗里点 `显存` / `GPU` 切换排序列，再点当前列切换升/降序
 - 点进程行展开详情；往下滚动会暂停刷新，回到顶部自动恢复
 - 鼠标悬停面板项可以看 tooltip：负载、显存、温度、功耗、频率、amdgpu_top 版本
@@ -132,6 +133,7 @@ tail -f ~/.cache/kde-amdgpu-top/daemon.log
 | 弹窗显示「没有检测到 AMD GPU」 | 确认 `lsmod \| grep amdgpu`、`amdgpu_top --list` 有输出 |
 | 数字一直不动 | 看 `--status`；如果守护进程不在，重启 plasmashell，或手动 `--ensure` |
 | 面板上被裁掉一截 | 面板太挤；关掉「显示 GPU / VRAM 标签」，或去掉一个不常用的指标 |
+| 加进来就挤在最右边、压住时钟 | 1.0.1 之前的问题（没给面板项声明 `Layout.*` 尺寸，Plasma 只分了图标大小的格子）。升级后重启一次 plasmashell 即可 |
 | 换了 GPU 序号不生效 | 配置变更会重启守护进程，等 15 秒或重启 plasmashell |
 
 ## 开发

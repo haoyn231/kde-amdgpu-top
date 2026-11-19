@@ -14,7 +14,7 @@
         "License": "MIT",
         "Name": "AMD GPU 监视器",
         "Name[en_GB]": "AMD GPU Monitor",
-        "Version": "1.0.0",
+        "Version": "1.0.1",
         "Website": "https://github.com/haoyn231/kde-amdgpu-top"
     },
     "X-Plasma-API-Minimum-Version": "6.0",

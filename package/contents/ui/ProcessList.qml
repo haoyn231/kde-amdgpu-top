@@ -44,7 +44,14 @@ Item {
         resume();
     }
     onSnapChanged: refresh()
-    onActiveChanged: if (active) refresh()
+    onActiveChanged: {
+        if (active) {
+            // 每次打开弹窗都回到"点面板时选的那一列"，避免上次手动排序的残留
+            sortKey = preferredSort;
+            sortDesc = true;
+            resume();
+        }
+    }
 
     function resume() {
         if (list.contentY > 0) {

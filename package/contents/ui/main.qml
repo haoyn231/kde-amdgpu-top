@@ -20,6 +20,9 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground
+    Plasmoid.title: i18n("AMD GPU 监视器")
+
+    preferredRepresentation: compactRepresentation
 
     // ---------------------------------------------------------------- 后端通道
     readonly property string scriptPath: {
@@ -34,6 +37,9 @@ PlasmoidItem {
         + (plasmoid.configuration.usePerfCounters ? " --pc" : "")
     // 比采样快一点读，肉眼不易察觉到延迟；重复的快照会被时间戳过滤掉
     readonly property int pollInterval: Math.max(400, Math.round(root.sampleInterval * 500))
+
+    // 点面板上的 GPU / VRAM 数字时，用这一列作为进程列表的初始排序
+    property string requestedSort: ""
 
     property string snapshotPath: ""
     property var snapshot: null
@@ -207,12 +213,21 @@ PlasmoidItem {
         showVram: plasmoid.configuration.showVram
         showLabels: plasmoid.configuration.showLabels
         vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
+
+        onActivated: (sortKey) => {
+            if (root.expanded) {          // 已经开着就收起来
+                root.expanded = false;
+                return;
+            }
+            root.requestedSort = sortKey;
+            root.expanded = true;
+        }
     }
 
     fullRepresentation: FullRepresentation {
         snap: root.snapshot
         maxProcs: plasmoid.configuration.maxProcesses
-        preferredSort: plasmoid.configuration.sortKey
-        active: plasmoid.expanded
+        preferredSort: root.requestedSort !== "" ? root.requestedSort : plasmoid.configuration.sortKey
+        active: root.expanded
     }
 }

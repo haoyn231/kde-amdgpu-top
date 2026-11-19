@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "haoyn231"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "在面板上查看 AMD GPU 负载与显存占用，点开后查看传感器详情与每个进程的显存占用",
+        "Description[en_GB]": "AMD GPU load and VRAM usage in the panel, with sensors and per-process usage in the popup",
+        "Icon": "utilities-system-monitor",
+        "Id": "org.hao.amdgputop",
+        "License": "MIT",
+        "Name": "AMD GPU 监视器",
+        "Name[en_GB]": "AMD GPU Monitor",
+        "Version": "1.0.0",
+        "Website": "https://github.com/haoyn231/kde-amdgpu-top"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-MainScript": "ui/main.qml"
+}

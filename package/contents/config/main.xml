@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <!-- 采样间隔（秒）。同时也是守护进程写快照的间隔。 -->
+    <entry name="sampleInterval" type="Int">
+      <default>1</default>
+    </entry>
+    <!-- 多个 AMD GPU 时选第几个（amdgpu_top 里的设备顺序） -->
+    <entry name="gpuIndex" type="Int">
+      <default>0</default>
+    </entry>
+    <!-- 弹窗里最多列出多少个进程 -->
+    <entry name="maxProcesses" type="Int">
+      <default>12</default>
+    </entry>
+    <!-- 默认排序列：vram / gfx / name -->
+    <entry name="sortKey" type="String">
+      <default>vram</default>
+    </entry>
+    <!-- 面板上显存的显示方式：percent / absolute -->
+    <entry name="vramUnit" type="String">
+      <default>percent</default>
+    </entry>
+    <entry name="showIcon" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showLoad" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showVram" type="Bool">
+      <default>true</default>
+    </entry>
+    <entry name="showLabels" type="Bool">
+      <default>true</default>
+    </entry>
+    <!-- 是否让 amdgpu_top 读取性能计数器（GRBM）。关闭更省电。 -->
+    <entry name="usePerfCounters" type="Bool">
+      <default>false</default>
+    </entry>
+  </group>
+</kcfg>

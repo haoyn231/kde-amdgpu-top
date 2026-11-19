@@ -173,7 +173,9 @@ systemctl --user restart plasma-plasmashell.service
 - 高负载阈值：`neutralTextColor` / `negativeTextColor`
 - 环形表与趋势图用 Canvas 绘制，主题色变化时主动重绘
 
-已在运行期间从 `OrchisDark` 切换到 `BreezeLight` 并切回，界面颜色即时更新；`docs/images/screenshot.png` 是深色主题下的离屏渲染结果。
+已在运行期间从 `OrchisDark` 切换到 `BreezeLight` 并切回，界面颜色即时更新；`docs/images/screenshot.png` 是 `BreezeLight` 下以 2 倍分辨率离屏渲染、再合成到壁纸背景上的结果。
+
+想自己重新出图，用 `./tools/render-preview.sh`：它按当前配色渲染原始弹窗（1 倍，直接覆盖 `docs/images/` 里的三张图），加 `QT_SCALE_FACTOR=2` 可出 2 倍图；README 这张另外合成了壁纸背景与圆角投影。
 
 ## 开发与测试
 

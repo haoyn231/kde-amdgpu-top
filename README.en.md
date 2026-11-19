@@ -173,7 +173,9 @@ No foreground or background color is hardcoded:
 - High-load thresholds: `neutralTextColor` / `negativeTextColor`
 - The ring and the history chart are drawn with Canvas and repaint when theme colors change
 
-Switching from `OrchisDark` to `BreezeLight` and back at runtime updates everything immediately; `docs/images/screenshot.png` is an offscreen render in the dark scheme.
+Switching from `OrchisDark` to `BreezeLight` and back at runtime updates everything immediately; `docs/images/screenshot.png` is an offscreen render at 2x in the `BreezeLight` scheme, composited onto a wallpaper backdrop.
+
+To regenerate it yourself run `./tools/render-preview.sh`: it renders the raw popup in the current scheme at 1x and overwrites the three images in `docs/images/`; add `QT_SCALE_FACTOR=2` for a 2x render. The README image additionally composites the wallpaper backdrop and the rounded shadow.
 
 ## Development and testing
 
